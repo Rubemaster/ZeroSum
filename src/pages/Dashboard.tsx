@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Widget from '../components/Widget';
 import AddWidget from '../components/AddWidget';
 import SearchBar from '../components/SearchBar';
+import TradeWidget from '../components/TradeWidget';
 import type { WidgetConfig } from '../components/AddWidget';
 import './Pages.css';
 import './Dashboard.css';
@@ -9,6 +10,7 @@ import './Dashboard.css';
 // Define all available widgets
 const WIDGET_REGISTRY: WidgetConfig[] = [
   { id: 'search', name: 'Search', description: 'Search stocks, ETFs, crypto', icon: '⌕' },
+  { id: 'trade', name: 'Trade', description: 'Buy and sell stocks', icon: '⇄' },
   { id: 'stats', name: 'Account Stats', description: 'Balance, P&L, and buying power', icon: '$' },
   { id: 'performance', name: 'Portfolio Performance', description: 'Chart of your portfolio over time', icon: '↗' },
   { id: 'watchlist', name: 'Watchlist', description: 'Track your favorite stocks', icon: '★' },
@@ -18,10 +20,11 @@ const WIDGET_REGISTRY: WidgetConfig[] = [
 ];
 
 // Default active widgets
-const DEFAULT_WIDGETS = ['search', 'stats', 'performance', 'watchlist'];
+const DEFAULT_WIDGETS = ['search', 'trade', 'stats', 'performance', 'watchlist'];
 
 const Dashboard = () => {
   const [activeWidgets, setActiveWidgets] = useState<string[]>(DEFAULT_WIDGETS);
+  const [selectedStock, setSelectedStock] = useState<string | null>(null);
 
   const handleCloseWidget = (widgetId: string) => {
     setActiveWidgets(prev => prev.filter(id => id !== widgetId));
@@ -36,7 +39,10 @@ const Dashboard = () => {
   const renderWidgetContent = (widgetId: string) => {
     switch (widgetId) {
       case 'search':
-        return <SearchBar isWidget />;
+        return <SearchBar isWidget onSelectStock={setSelectedStock} />;
+
+      case 'trade':
+        return <TradeWidget selectedStock={selectedStock} onSelectStock={setSelectedStock} />;
 
       case 'stats':
         return (
@@ -191,6 +197,7 @@ const Dashboard = () => {
 
   const getWidgetClass = (widgetId: string) => {
     if (widgetId === 'search') return 'widget-full widget-compact';
+    if (widgetId === 'trade') return 'widget-small';
     if (widgetId === 'stats') return 'widget-full';
     if (widgetId === 'performance') return 'widget-large';
     return 'widget-small';

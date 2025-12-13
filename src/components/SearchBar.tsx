@@ -24,9 +24,10 @@ interface ActiveFilter {
 
 interface SearchBarProps {
   isWidget?: boolean;
+  onSelectStock?: (symbol: string) => void;
 }
 
-const SearchBar = ({ isWidget = false }: SearchBarProps) => {
+const SearchBar = ({ isWidget = false, onSelectStock }: SearchBarProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isWidgetExpanded, setIsWidgetExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,11 +40,16 @@ const SearchBar = ({ isWidget = false }: SearchBarProps) => {
   const widgetInputRef = useRef<HTMLInputElement>(null);
 
   const toggleStockSelection = (symbol: string) => {
+    const isSelected = selectedStocks.includes(symbol);
     setSelectedStocks(prev =>
-      prev.includes(symbol)
+      isSelected
         ? prev.filter(s => s !== symbol)
         : [...prev, symbol]
     );
+    // Notify parent of selection (only when selecting, not deselecting)
+    if (!isSelected && onSelectStock) {
+      onSelectStock(symbol);
+    }
     // Close the search panel after selection
     setIsWidgetExpanded(false);
     setShowFilterDropdown(false);
