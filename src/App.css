@@ -1,0 +1,241 @@
+.app {
+  min-height: 100vh;
+  position: relative;
+}
+
+.app-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  transition: background 0.5s ease;
+}
+
+/* 1. Rocky Mountains - very transparent over white */
+.app-background.bg-rockies {
+  background: #ffffff;
+}
+
+/* Dark text for light Rockies background */
+.app.theme-light {
+  color: #1e293b;
+}
+
+.app.theme-light .liquid-glass-panel {
+  --glass-tint-r: 0;
+  --glass-tint-g: 0;
+  --glass-tint-b: 0;
+  --glass-tint-opacity: 0.05;
+  box-shadow:
+    inset 0 0 var(--glass-shadow-blur) var(--glass-shadow-spread) rgba(0, 0, 0, 0.1),
+    0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.app.theme-light h1,
+.app.theme-light h2,
+.app.theme-light h3,
+.app.theme-light h4,
+.app.theme-light h5,
+.app.theme-light h6 {
+  color: #0f172a;
+}
+
+.app.theme-light p,
+.app.theme-light span,
+.app.theme-light label {
+  color: #334155;
+}
+
+.app.theme-light .selector-label {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.app.theme-light .selector-btn {
+  color: rgba(0, 0, 0, 0.7);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.app.theme-light .selector-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.3);
+  color: #000000;
+}
+
+.app.theme-light .background-selector {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 2. Dark, restrained gradients - navy to near-black */
+.app-background.bg-dark-gradient {
+  background:
+    /* Subtle vignette */
+    radial-gradient(ellipse 80% 60% at 50% 50%, transparent 0%, rgba(2, 6, 23, 0.4) 100%),
+    /* Soft blue accent */
+    radial-gradient(ellipse 60% 40% at 20% 30%, rgba(30, 58, 138, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 35% at 80% 70%, rgba(30, 64, 175, 0.1) 0%, transparent 45%),
+    /* Base gradient */
+    linear-gradient(180deg, #0f172a 0%, #020617 100%);
+}
+
+/* 3. Abstract financial textures - soft waveforms and gridlines */
+.app-background.bg-financial-texture {
+  background:
+    /* Faint grid pattern */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 60px,
+      rgba(255, 255, 255, 0.02) 60px,
+      rgba(255, 255, 255, 0.02) 61px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 60px,
+      rgba(255, 255, 255, 0.02) 60px,
+      rgba(255, 255, 255, 0.02) 61px
+    ),
+    /* Soft wave/contour lines */
+    radial-gradient(ellipse 100% 20% at 50% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 15% at 50% 60%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 10% at 50% 40%, rgba(59, 130, 246, 0.02) 0%, transparent 50%),
+    /* Base */
+    linear-gradient(180deg, #1f2937 0%, #111827 100%);
+}
+
+/* 4. Defocused city/architecture - simulated with gradients */
+.app-background.bg-city-blur {
+  background:
+    /* Dark overlay */
+    linear-gradient(180deg, rgba(15, 23, 42, 0.75) 0%, rgba(15, 23, 42, 0.85) 100%),
+    /* Simulated blurred city lights */
+    radial-gradient(ellipse 15% 8% at 15% 70%, rgba(250, 204, 21, 0.08) 0%, transparent 100%),
+    radial-gradient(ellipse 10% 6% at 25% 75%, rgba(251, 191, 36, 0.06) 0%, transparent 100%),
+    radial-gradient(ellipse 12% 7% at 40% 68%, rgba(253, 224, 71, 0.05) 0%, transparent 100%),
+    radial-gradient(ellipse 8% 5% at 55% 72%, rgba(250, 204, 21, 0.07) 0%, transparent 100%),
+    radial-gradient(ellipse 14% 8% at 70% 65%, rgba(251, 191, 36, 0.06) 0%, transparent 100%),
+    radial-gradient(ellipse 10% 6% at 85% 70%, rgba(253, 224, 71, 0.05) 0%, transparent 100%),
+    /* Building silhouettes */
+    linear-gradient(0deg, #0f172a 0%, #0f172a 30%, transparent 30%),
+    radial-gradient(ellipse 200% 100% at 50% 100%, #1e293b 0%, #0f172a 50%),
+    /* Sky gradient */
+    linear-gradient(180deg, #1e3a5f 0%, #0f172a 100%);
+}
+
+/* 5. Noise + gradient combination */
+.app-background.bg-noise-gradient {
+  background:
+    /* Light bloom behind center */
+    radial-gradient(ellipse 50% 40% at 50% 40%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
+    /* Base gradient */
+    linear-gradient(180deg, #1e293b 0%, #0f172a 50%, #020617 100%);
+}
+
+.app-background.bg-noise-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Background Selector UI */
+.background-selector {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  z-index: 9999;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.selector-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 4px;
+}
+
+.selector-btn {
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.selector-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.selector-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(59, 130, 246, 0.6);
+  color: #ffffff;
+}
+
+.svg-filters-global {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.main-content {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  padding-top: 100px;
+}
+
+/* Global Liquid Glass Class */
+.liquid-glass-panel {
+  position: relative;
+  border-radius: 20px;
+  isolation: isolate;
+  box-shadow:
+    inset 0 0 var(--glass-shadow-blur) var(--glass-shadow-spread) var(--glass-shadow-color),
+    0 10px 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.liquid-glass-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(var(--glass-tint-r), var(--glass-tint-g), var(--glass-tint-b), var(--glass-tint-opacity));
+  z-index: 2;
+  pointer-events: none;
+}
+
+.liquid-glass-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(var(--glass-frost-blur));
+  -webkit-backdrop-filter: blur(var(--glass-frost-blur));
+  filter: url(#glass-distortion-global);
+  z-index: 1;
+}

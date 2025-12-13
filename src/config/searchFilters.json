@@ -1,0 +1,94 @@
+{
+  "filters": [
+    {
+      "id": "price",
+      "label": "Price Range",
+      "type": "range",
+      "graphic": "histogram",
+      "min": 0,
+      "max": 1000,
+      "step": 10,
+      "unit": "$",
+      "histogramData": [5, 12, 25, 45, 80, 95, 75, 55, 35, 20, 15, 8, 4, 2, 1]
+    },
+    {
+      "id": "volume",
+      "label": "Volume",
+      "type": "range",
+      "graphic": "histogram",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "M",
+      "histogramData": [8, 15, 30, 55, 70, 85, 65, 45, 30, 18, 10, 5]
+    },
+    {
+      "id": "sector",
+      "label": "Sector",
+      "type": "multiselect",
+      "options": [
+        "Technology",
+        "Healthcare",
+        "Finance",
+        "Energy",
+        "Consumer Goods",
+        "Industrial",
+        "Real Estate",
+        "Utilities",
+        "Materials",
+        "Communications"
+      ]
+    },
+    {
+      "id": "marketCap",
+      "label": "Market Cap",
+      "type": "select",
+      "options": [
+        { "value": "micro", "label": "Micro (<$300M)" },
+        { "value": "small", "label": "Small ($300M-$2B)" },
+        { "value": "mid", "label": "Mid ($2B-$10B)" },
+        { "value": "large", "label": "Large ($10B-$200B)" },
+        { "value": "mega", "label": "Mega (>$200B)" }
+      ]
+    },
+    {
+      "id": "change",
+      "label": "% Change",
+      "type": "range",
+      "graphic": "histogram",
+      "min": -50,
+      "max": 50,
+      "step": 5,
+      "unit": "%",
+      "histogramData": [2, 5, 12, 25, 45, 80, 95, 80, 45, 25, 12, 5, 2]
+    },
+    {
+      "id": "exchange",
+      "label": "Exchange",
+      "type": "multiselect",
+      "options": [
+        "NYSE",
+        "NASDAQ",
+        "AMEX",
+        "OTC"
+      ]
+    },
+    {
+      "id": "dividend",
+      "label": "Dividend Yield",
+      "type": "range",
+      "min": 0,
+      "max": 10,
+      "step": 0.5,
+      "unit": "%"
+    },
+    {
+      "id": "peRatio",
+      "label": "P/E Ratio",
+      "type": "range",
+      "min": 0,
+      "max": 100,
+      "step": 5
+    }
+  ]
+}

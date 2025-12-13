@@ -1,0 +1,52 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Liquid Glass Base Settings - optimized for dark backgrounds */
+  --glass-shadow-blur: 2px;
+  --glass-shadow-spread: 0px;
+  --glass-shadow-color: rgba(255, 255, 255, 0.1);
+  --glass-tint-r: 255;
+  --glass-tint-g: 255;
+  --glass-tint-b: 255;
+  --glass-tint-opacity: 0.08;
+  --glass-frost-blur: 12px;
+  --glass-noise-freq: 0.004;
+  --glass-distortion-strength: 77;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #0f172a;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+input, select {
+  font-family: inherit;
+}
