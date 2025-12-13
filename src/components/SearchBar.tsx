@@ -33,9 +33,22 @@ const SearchBar = ({ isWidget = false }: SearchBarProps) => {
   const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState<FilterConfig | null>(null);
+  const [selectedStocks, setSelectedStocks] = useState<string[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
   const widgetInputRef = useRef<HTMLInputElement>(null);
+
+  const toggleStockSelection = (symbol: string) => {
+    setSelectedStocks(prev =>
+      prev.includes(symbol)
+        ? prev.filter(s => s !== symbol)
+        : [...prev, symbol]
+    );
+    // Close the search panel after selection
+    setIsWidgetExpanded(false);
+    setShowFilterDropdown(false);
+    setSelectedFilter(null);
+  };
 
   const filters = filtersConfig.filters as FilterConfig[];
 
@@ -268,7 +281,11 @@ const SearchBar = ({ isWidget = false }: SearchBarProps) => {
                   </thead>
                   <tbody>
                     {filteredResults.map(result => (
-                      <tr key={result.symbol}>
+                      <tr
+                        key={result.symbol}
+                        className={selectedStocks.includes(result.symbol) ? 'selected' : ''}
+                        onClick={() => toggleStockSelection(result.symbol)}
+                      >
                         <td className="result-symbol">{result.symbol}</td>
                         <td className="result-name">{result.name}</td>
                         <td className="result-price">${result.price.toFixed(2)}</td>

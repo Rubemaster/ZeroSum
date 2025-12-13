@@ -507,6 +507,18 @@
   background: rgba(0, 0, 0, 0.05);
 }
 
+.search-results-table tbody tr.selected {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.search-results-table tbody tr.selected:hover {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.search-results-table tbody tr.selected .result-symbol {
+  color: #3b82f6;
+}
+
 .search-results-table tbody tr:last-child td {
   border-bottom: none;
 }
