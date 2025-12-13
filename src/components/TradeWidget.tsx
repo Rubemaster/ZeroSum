@@ -21,6 +21,8 @@ const stockData: Record<string, { name: string; price: number; change: number }>
 const TradeWidget = ({ selectedStock, onSelectStock }: TradeWidgetProps) => {
   const [orderType, setOrderType] = useState<'buy' | 'sell'>('buy');
   const [quantity, setQuantity] = useState<string>('1');
+  const [stopLoss, setStopLoss] = useState<string>('');
+  const [takeProfit, setTakeProfit] = useState<string>('');
 
   const stock = selectedStock ? stockData[selectedStock] : null;
   const totalValue = stock ? stock.price * (parseInt(quantity) || 0) : 0;
@@ -37,81 +39,141 @@ const TradeWidget = ({ selectedStock, onSelectStock }: TradeWidgetProps) => {
 
   return (
     <div className="trade-widget">
-      {/* Large Ticker Display */}
-      <div className="trade-ticker-section">
-        <div className="trade-ticker">{selectedStock}</div>
-        <div className="trade-company">{stock.name}</div>
-        <button
-          className="trade-clear"
-          onClick={() => onSelectStock('')}
-          aria-label="Clear selection"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 6 6 18M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
+      <div className="trade-layout">
+        {/* Left Side - Ticker & Price */}
+        <div className="trade-left">
+          <div className="trade-ticker-section">
+            <div className="trade-ticker">{selectedStock}</div>
+            <div className="trade-company">{stock.name}</div>
+          </div>
+          <div className="trade-price-section">
+            <span className="trade-price">${stock.price.toFixed(2)}</span>
+            <span className={`trade-change ${stock.change >= 0 ? 'positive' : 'negative'}`}>
+              {stock.change >= 0 ? '+' : ''}{stock.change.toFixed(2)}%
+            </span>
+          </div>
+          <div className="trade-total-section">
+            <span className="trade-label">Total</span>
+            <span className="trade-total">${totalValue.toFixed(2)}</span>
+          </div>
+        </div>
 
-      {/* Price Info */}
-      <div className="trade-price-section">
-        <span className="trade-price">${stock.price.toFixed(2)}</span>
-        <span className={`trade-change ${stock.change >= 0 ? 'positive' : 'negative'}`}>
-          {stock.change >= 0 ? '+' : ''}{stock.change.toFixed(2)}%
-        </span>
-      </div>
+        {/* Right Side - Order Controls */}
+        <div className="trade-right">
+          {/* Order Type Toggle */}
+          <div className="trade-type-toggle">
+            <button
+              className={`trade-type-btn ${orderType === 'buy' ? 'active buy' : ''}`}
+              onClick={() => setOrderType('buy')}
+            >
+              Buy
+            </button>
+            <button
+              className={`trade-type-btn ${orderType === 'sell' ? 'active sell' : ''}`}
+              onClick={() => setOrderType('sell')}
+            >
+              Sell
+            </button>
+          </div>
 
-      {/* Order Type Toggle */}
-      <div className="trade-type-toggle">
-        <button
-          className={`trade-type-btn ${orderType === 'buy' ? 'active buy' : ''}`}
-          onClick={() => setOrderType('buy')}
-        >
-          Buy
-        </button>
-        <button
-          className={`trade-type-btn ${orderType === 'sell' ? 'active sell' : ''}`}
-          onClick={() => setOrderType('sell')}
-        >
-          Sell
-        </button>
-      </div>
+          {/* Quantity */}
+          <div className="trade-control-group">
+            <label className="trade-label">Qty</label>
+            <div className="trade-compact-input">
+              <button
+                className="trade-qty-btn"
+                onClick={() => setQuantity(String(Math.max(1, (parseInt(quantity) || 1) - 1)))}
+              >
+                −
+              </button>
+              <input
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                min="1"
+                className="trade-qty-field"
+              />
+              <button
+                className="trade-qty-btn"
+                onClick={() => setQuantity(String((parseInt(quantity) || 0) + 1))}
+              >
+                +
+              </button>
+            </div>
+          </div>
 
-      {/* Quantity Input */}
-      <div className="trade-quantity-section">
-        <label className="trade-label">Quantity</label>
-        <div className="trade-quantity-input">
-          <button
-            className="trade-qty-btn"
-            onClick={() => setQuantity(String(Math.max(1, (parseInt(quantity) || 1) - 1)))}
-          >
-            −
-          </button>
-          <input
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            min="1"
-            className="trade-qty-field"
-          />
-          <button
-            className="trade-qty-btn"
-            onClick={() => setQuantity(String((parseInt(quantity) || 0) + 1))}
-          >
-            +
+          {/* SL/TP Row */}
+          <div className="trade-sl-tp-row">
+            <div className="trade-control-group">
+              <label className="trade-label">SL</label>
+              <div className="trade-price-input">
+                <span className="trade-input-prefix">$</span>
+                <input
+                  type="number"
+                  value={stopLoss}
+                  onChange={(e) => setStopLoss(e.target.value)}
+                  placeholder={(stock.price * 0.95).toFixed(0)}
+                  className="trade-sl-tp-field"
+                />
+                <div className="trade-price-arrows">
+                  <button
+                    className="trade-arrow-btn"
+                    onClick={() => setStopLoss(String(Math.round((parseFloat(stopLoss) || stock.price * 0.95) + 1)))}
+                  >
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                      <path d="M18 15l-6-6-6 6" />
+                    </svg>
+                  </button>
+                  <button
+                    className="trade-arrow-btn"
+                    onClick={() => setStopLoss(String(Math.max(0, Math.round((parseFloat(stopLoss) || stock.price * 0.95) - 1))))}
+                  >
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="trade-control-group">
+              <label className="trade-label">TP</label>
+              <div className="trade-price-input">
+                <span className="trade-input-prefix">$</span>
+                <input
+                  type="number"
+                  value={takeProfit}
+                  onChange={(e) => setTakeProfit(e.target.value)}
+                  placeholder={(stock.price * 1.1).toFixed(0)}
+                  className="trade-sl-tp-field"
+                />
+                <div className="trade-price-arrows">
+                  <button
+                    className="trade-arrow-btn"
+                    onClick={() => setTakeProfit(String(Math.round((parseFloat(takeProfit) || stock.price * 1.1) + 1)))}
+                  >
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                      <path d="M18 15l-6-6-6 6" />
+                    </svg>
+                  </button>
+                  <button
+                    className="trade-arrow-btn"
+                    onClick={() => setTakeProfit(String(Math.max(0, Math.round((parseFloat(takeProfit) || stock.price * 1.1) - 1))))}
+                  >
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button className={`trade-submit ${orderType}`}>
+            {orderType === 'buy' ? 'Buy' : 'Sell'}
           </button>
         </div>
       </div>
-
-      {/* Total */}
-      <div className="trade-total-section">
-        <span className="trade-label">Estimated Total</span>
-        <span className="trade-total">${totalValue.toFixed(2)}</span>
-      </div>
-
-      {/* Submit Button */}
-      <button className={`trade-submit ${orderType}`}>
-        {orderType === 'buy' ? 'Buy' : 'Sell'} {selectedStock}
-      </button>
     </div>
   );
 };

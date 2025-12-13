@@ -1,7 +1,29 @@
 .trade-widget {
   display: flex;
   flex-direction: column;
+}
+
+/* Horizontal Split Layout */
+.trade-layout {
+  display: flex;
   gap: 16px;
+  align-items: stretch;
+}
+
+.trade-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.trade-right {
+  flex: 0 0 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
 }
 
 .trade-widget-empty {
@@ -34,13 +56,11 @@
 
 /* Ticker Section */
 .trade-ticker-section {
-  position: relative;
-  text-align: center;
-  padding: 8px 0;
+  text-align: left;
 }
 
 .trade-ticker {
-  font-size: 3rem;
+  font-size: 2.25rem;
   font-weight: 800;
   letter-spacing: 0.05em;
   color: rgba(0, 0, 0, 0.9);
@@ -48,26 +68,30 @@
 }
 
 .trade-company {
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   color: rgba(0, 0, 0, 0.5);
-  margin-top: 4px;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .trade-clear {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 28px;
-  height: 28px;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.1);
   border: none;
   border-radius: 50%;
   color: rgba(0, 0, 0, 0.4);
   cursor: pointer;
   transition: all 0.15s ease;
+  z-index: 1;
 }
 
 .trade-clear:hover {
@@ -79,18 +103,18 @@
 .trade-price-section {
   display: flex;
   align-items: baseline;
-  justify-content: center;
-  gap: 10px;
+  gap: 6px;
+  margin-top: 4px;
 }
 
 .trade-price {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.85);
 }
 
 .trade-change {
-  font-size: 1rem;
+  font-size: 0.7rem;
   font-weight: 600;
 }
 
@@ -105,18 +129,18 @@
 /* Order Type Toggle */
 .trade-type-toggle {
   display: flex;
-  gap: 8px;
+  gap: 0;
   background: rgba(0, 0, 0, 0.06);
-  padding: 4px;
-  border-radius: 10px;
+  padding: 2px;
+  border-radius: 6px;
 }
 
 .trade-type-btn {
   flex: 1;
-  padding: 10px 16px;
+  padding: 6px 8px;
   border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -138,39 +162,38 @@
   color: white;
 }
 
-/* Quantity Section */
-.trade-quantity-section {
+.trade-control-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
 }
 
 .trade-label {
-  font-size: 0.75rem;
+  font-size: 0.6rem;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.45);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.trade-quantity-input {
+.trade-compact-input {
   display: flex;
   align-items: center;
   gap: 0;
   background: rgba(0, 0, 0, 0.06);
-  border-radius: 10px;
+  border-radius: 5px;
   overflow: hidden;
 }
 
 .trade-qty-btn {
-  width: 44px;
-  height: 44px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   background: transparent;
-  font-size: 1.25rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.6);
   cursor: pointer;
@@ -184,11 +207,11 @@
 
 .trade-qty-field {
   flex: 1;
-  height: 44px;
+  height: 26px;
   border: none;
   background: transparent;
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.85);
   outline: none;
@@ -201,33 +224,121 @@
   margin: 0;
 }
 
+/* Price Input (SL/TP) */
+.trade-price-input {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 5px;
+  overflow: hidden;
+  height: 26px;
+}
+
+.trade-input-prefix {
+  padding-left: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+
+.trade-sl-tp-field {
+  flex: 1;
+  height: 26px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0 6px 0 2px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.85);
+  outline: none;
+  -moz-appearance: textfield;
+  min-width: 0;
+}
+
+.trade-sl-tp-field::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.trade-sl-tp-field::-webkit-outer-spin-button,
+.trade-sl-tp-field::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Price Arrows */
+.trade-price-arrows {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.trade-arrow-btn {
+  width: 16px;
+  height: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.trade-arrow-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.trade-arrow-btn:active {
+  background: rgba(0, 0, 0, 0.12);
+}
+
 /* Total Section */
 .trade-total-section {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 8px;
 }
 
 .trade-total {
-  font-size: 1.25rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.85);
+}
+
+/* SL/TP Row */
+.trade-sl-tp-row {
+  display: flex;
+  gap: 4px;
+}
+
+.trade-sl-tp-row .trade-control-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.trade-sl-tp-row .trade-price-input {
+  width: 100%;
 }
 
 /* Submit Button */
 .trade-submit {
   width: 100%;
-  padding: 14px 20px;
+  padding: 10px 12px;
   border: none;
-  border-radius: 12px;
-  font-size: 1rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+  margin-top: auto;
 }
 
 .trade-submit.buy {

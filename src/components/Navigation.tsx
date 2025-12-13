@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/clerk-react';
 import SearchBar from './SearchBar';
 import './Navigation.css';
 
@@ -34,12 +35,34 @@ const Navigation = ({ variant = 'default' }: NavigationProps) => {
         <NavLink to="/glass" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
           Glass
         </NavLink>
+        <NavLink to="/kyc" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+          KYC
+        </NavLink>
       </div>
 
       <div className="nav-actions">
         <SearchBar />
-        <button className="btn-secondary">Sign In</button>
-        <button className="btn-primary">Get Started</button>
+        <SignedOut>
+          <SignInButton mode="modal">
+            <button className="btn-secondary">Sign In</button>
+          </SignInButton>
+          <SignUpButton mode="modal">
+            <button className="btn-primary">Get Started</button>
+          </SignUpButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton
+            afterSignOutUrl="/"
+            appearance={{
+              elements: {
+                avatarBox: {
+                  width: 36,
+                  height: 36
+                }
+              }
+            }}
+          />
+        </SignedIn>
       </div>
     </nav>
   );

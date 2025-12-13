@@ -6,7 +6,7 @@
 /* Dashboard Grid Layout */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
 }
 
@@ -16,11 +16,19 @@
 }
 
 .widget-large {
-  grid-column: span 2;
+  grid-column: span 3;
 }
 
 .widget-small {
   grid-column: span 1;
+}
+
+.widget-three-fifth {
+  grid-column: span 3;
+}
+
+.widget-two-fifth {
+  grid-column: span 2;
 }
 
 /* Stats Grid Inside Widget */
@@ -184,12 +192,17 @@
 .mover-item .change.negative { color: #f87171; }
 
 /* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .dashboard-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .widget-large {
+  .widget-large,
+  .widget-three-fifth {
+    grid-column: 1 / -1;
+  }
+
+  .widget-two-fifth {
     grid-column: 1 / -1;
   }
 
@@ -205,7 +218,9 @@
 
   .widget-full,
   .widget-large,
-  .widget-small {
+  .widget-small,
+  .widget-three-fifth,
+  .widget-two-fifth {
     grid-column: 1;
   }
 
