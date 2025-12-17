@@ -1,6 +1,11 @@
 .app {
   min-height: 100vh;
   position: relative;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.app * {
+  font-family: inherit;
 }
 
 .app-background {
@@ -45,7 +50,7 @@
 .app.theme-light p,
 .app.theme-light span,
 .app.theme-light label {
-  color: #334155;
+  color: #000;
 }
 
 .app.theme-light .selector-label {

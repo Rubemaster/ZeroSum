@@ -35,9 +35,6 @@ const Navigation = ({ variant = 'default' }: NavigationProps) => {
         <NavLink to="/glass" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
           Glass
         </NavLink>
-        <NavLink to="/kyc" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-          KYC
-        </NavLink>
       </div>
 
       <div className="nav-actions">
