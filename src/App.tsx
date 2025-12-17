@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
-import { SignedIn, SignedOut, RedirectToSignIn, SignIn, SignUp, useAuth } from '@clerk/clerk-react';
+import { SignedIn, SignedOut, RedirectToSignIn, SignIn, SignUp } from '@clerk/clerk-react';
 import Navigation from './components/Navigation';
 import KYCGate from './components/KYCGate';
 import Dashboard from './pages/Dashboard';

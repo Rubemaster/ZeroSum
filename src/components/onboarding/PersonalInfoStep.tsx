@@ -169,7 +169,6 @@ export default function PersonalInfoStep({
   disclosures,
   trustedContact,
   agreements,
-  homeAddress,
   onPersonalInfoChange,
   onIncomeInfoChange,
   onTradingProfileChange,
@@ -297,10 +296,6 @@ export default function PersonalInfoStep({
       return; // Don't allow deselecting the last one
     }
     setContactMethods(newMethods);
-  };
-
-  const updateAgreements = <K extends keyof Agreements>(field: K, value: Agreements[K]) => {
-    onAgreementsChange({ ...agreements, [field]: value });
   };
 
   const isValid = !!personalInfo.countryOfCitizenship;

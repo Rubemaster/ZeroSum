@@ -32,6 +32,11 @@ interface ApplicantData {
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
 
 // Declare Sumsub types
+interface SumsubSdkBuilder {
+  on: (event: string, callback: (...args: unknown[]) => void) => SumsubSdkBuilder;
+  build: () => { launch: (containerId: string) => void };
+}
+
 declare global {
   interface Window {
     snsWebSdk: {
@@ -40,12 +45,7 @@ declare global {
         getNewToken: () => Promise<string>
       ) => {
         withConf: (conf: { lang?: string; theme?: string }) => {
-          withOptions: (options: { addViewportTag?: boolean; adaptIframeHeight?: boolean }) => {
-            on: (event: string, callback: (...args: unknown[]) => void) => ReturnType<Window['snsWebSdk']['init']>['withConf'];
-            build: () => {
-              launch: (containerId: string) => void;
-            };
-          };
+          withOptions: (options: { addViewportTag?: boolean; adaptIframeHeight?: boolean }) => SumsubSdkBuilder;
         };
       };
     };

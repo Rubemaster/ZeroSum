@@ -17,6 +17,11 @@ interface ApplicantData {
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
 
 // Declare Sumsub types
+interface SumsubSdkBuilder {
+  on: (event: string, callback: (...args: unknown[]) => void) => SumsubSdkBuilder;
+  build: () => { launch: (containerId: string) => void };
+}
+
 declare global {
   interface Window {
     snsWebSdk: {
@@ -24,16 +29,8 @@ declare global {
         accessToken: string,
         getNewToken: () => Promise<string>
       ) => {
-        withConf: (conf: {
-          lang?: string;
-          theme?: string;
-        }) => {
-          withOptions: (options: { addViewportTag?: boolean; adaptIframeHeight?: boolean }) => {
-            on: (event: string, callback: (...args: unknown[]) => void) => ReturnType<Window['snsWebSdk']['init']>['withConf'];
-            build: () => {
-              launch: (containerId: string) => void;
-            };
-          };
+        withConf: (conf: { lang?: string; theme?: string }) => {
+          withOptions: (options: { addViewportTag?: boolean; adaptIframeHeight?: boolean }) => SumsubSdkBuilder;
         };
       };
     };
@@ -48,30 +45,6 @@ const KYC = () => {
   const [sdkLoaded, setSdkLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const sdkLaunched = useRef(false);
-
-  // Check verification status immediately on mount
-  useEffect(() => {
-    const checkInitialStatus = async () => {
-      const alreadyVerified = await checkStatus();
-      if (!alreadyVerified) {
-        // Only load SDK if not already verified
-        if (document.getElementById('sumsub-websdk')) {
-          setSdkLoaded(true);
-          return;
-        }
-
-        const script = document.createElement('script');
-        script.id = 'sumsub-websdk';
-        script.src = 'https://static.sumsub.com/idensic/static/sns-websdk-builder.js';
-        script.async = true;
-        script.onload = () => setSdkLoaded(true);
-        script.onerror = () => setError('Failed to load verification SDK');
-        document.head.appendChild(script);
-      }
-    };
-
-    checkInitialStatus();
-  }, [checkStatus]);
 
   // Check existing verification status
   const checkStatus = useCallback(async () => {
@@ -107,6 +80,30 @@ const KYC = () => {
       return false;
     }
   }, [getToken]);
+
+  // Check verification status immediately on mount
+  useEffect(() => {
+    const checkInitialStatus = async () => {
+      const alreadyVerified = await checkStatus();
+      if (!alreadyVerified) {
+        // Only load SDK if not already verified
+        if (document.getElementById('sumsub-websdk')) {
+          setSdkLoaded(true);
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.id = 'sumsub-websdk';
+        script.src = 'https://static.sumsub.com/idensic/static/sns-websdk-builder.js';
+        script.async = true;
+        script.onload = () => setSdkLoaded(true);
+        script.onerror = () => setError('Failed to load verification SDK');
+        document.head.appendChild(script);
+      }
+    };
+
+    checkInitialStatus();
+  }, [checkStatus]);
 
   // Get access token for Sumsub SDK
   const getAccessToken = useCallback(async (): Promise<string> => {

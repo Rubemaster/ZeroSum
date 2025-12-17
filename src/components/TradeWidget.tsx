@@ -18,7 +18,7 @@ const stockData: Record<string, { name: string; price: number; change: number }>
   NVDA: { name: 'NVIDIA Corp.', price: 495.22, change: 5.67 },
 };
 
-const TradeWidget = ({ selectedStock, onSelectStock }: TradeWidgetProps) => {
+const TradeWidget = ({ selectedStock }: TradeWidgetProps) => {
   const [orderType, setOrderType] = useState<'buy' | 'sell'>('buy');
   const [quantity, setQuantity] = useState<string>('1');
   const [stopLoss, setStopLoss] = useState<string>('');
