@@ -1,3 +1,21 @@
+/* Server Offline Banner */
+.server-offline-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  color: #fca5a5;
+  font-size: 0.9rem;
+}
+
+.server-offline-banner .offline-icon {
+  font-size: 1.2rem;
+}
+
 /* Dashboard Layout */
 .dashboard-page {
   padding: 20px;
@@ -96,6 +114,12 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+.position-info .position-filled {
+  font-size: 0.7rem;
+  color: #4ade80;
+  font-weight: 500;
+}
+
 .position-value {
   display: flex;
   flex-direction: column;
@@ -190,6 +214,193 @@
 
 .mover-item .change.positive { color: #4ade80; }
 .mover-item .change.negative { color: #f87171; }
+
+/* Watchlist Widget */
+.watchlist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.watchlist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.watchlist-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.watchlist-item .ticker {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #ffffff;
+  min-width: 60px;
+}
+
+.watchlist-item .price {
+  flex: 1;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: right;
+}
+
+.watchlist-item .change {
+  font-size: 0.875rem;
+  font-weight: 500;
+  min-width: 70px;
+  text-align: right;
+}
+
+.watchlist-item .change.positive { color: #4ade80; }
+.watchlist-item .change.negative { color: #f87171; }
+
+.watchlist-remove {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+
+.watchlist-remove:hover {
+  color: #f87171;
+}
+
+.no-watchlist {
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  margin: 8px 0 4px;
+}
+
+.watchlist-hint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  margin: 0;
+}
+
+.no-positions {
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+
+/* Order History Widget */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.order-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-side {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.order-side.buy {
+  background: rgba(74, 222, 128, 0.2);
+  color: #4ade80;
+}
+
+.order-side.sell {
+  background: rgba(248, 113, 113, 0.2);
+  color: #f87171;
+}
+
+.order-symbol {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #ffffff;
+}
+
+.order-details {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.order-status-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.order-status {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.order-status.filled {
+  background: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+}
+
+.order-status.partially_filled {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+
+.order-status.canceled,
+.order-status.cancelled {
+  background: rgba(248, 113, 113, 0.15);
+  color: #f87171;
+}
+
+.order-status.pending,
+.order-status.new,
+.order-status.accepted {
+  background: rgba(96, 165, 250, 0.15);
+  color: #60a5fa;
+}
+
+.order-time {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.no-orders {
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  padding: 20px 0;
+}
 
 /* Responsive */
 @media (max-width: 1200px) {

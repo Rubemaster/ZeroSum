@@ -4,6 +4,7 @@ import './TradeWidget.css';
 interface TradeWidgetProps {
   selectedStock: string | null;
   onSelectStock: (symbol: string) => void;
+  onAddToWatchlist?: (symbol: string) => void;
 }
 
 // Mock stock data
@@ -18,7 +19,7 @@ const stockData: Record<string, { name: string; price: number; change: number }>
   NVDA: { name: 'NVIDIA Corp.', price: 495.22, change: 5.67 },
 };
 
-const TradeWidget = ({ selectedStock }: TradeWidgetProps) => {
+const TradeWidget = ({ selectedStock, onAddToWatchlist }: TradeWidgetProps) => {
   const [orderType, setOrderType] = useState<'buy' | 'sell'>('buy');
   const [quantity, setQuantity] = useState<string>('1');
   const [stopLoss, setStopLoss] = useState<string>('');
@@ -56,6 +57,16 @@ const TradeWidget = ({ selectedStock }: TradeWidgetProps) => {
             <span className="trade-label">Total</span>
             <span className="trade-total">${totalValue.toFixed(2)}</span>
           </div>
+          {onAddToWatchlist && (
+            <button
+              className="trade-watchlist-btn"
+              onClick={() => onAddToWatchlist(selectedStock)}
+              title="Add to watchlist"
+            >
+              <span className="watchlist-icon">★</span>
+              Add to Watchlist
+            </button>
+          )}
         </div>
 
         {/* Right Side - Order Controls */}

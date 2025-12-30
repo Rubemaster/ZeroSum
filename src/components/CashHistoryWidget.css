@@ -1,0 +1,25 @@
+.cash-history-widget {
+  height: 100%;
+  overflow: auto;
+}
+
+.cash-history-widget .json-output {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 12px;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #1a1a1a;
+  white-space: pre;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  resize: none;
+  box-sizing: border-box;
+}
+
+.cash-history-widget .error {
+  color: #ff6b6b;
+}

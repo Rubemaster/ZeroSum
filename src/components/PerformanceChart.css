@@ -1,0 +1,260 @@
+.performance-chart {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.performance-loading,
+.performance-error,
+.performance-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+
+.performance-empty .empty-hint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 4px;
+}
+
+/* Header */
+.performance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.performance-title {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chart-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Stock Legend */
+.stock-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-symbol {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+.legend-percent {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.legend-percent.positive {
+  color: #4ade80;
+}
+
+.legend-percent.negative {
+  color: #f87171;
+}
+
+.legend-filled {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.legend-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Chart Controls */
+.chart-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.percent-toggle {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.percent-toggle:hover {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.percent-toggle.active {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+/* Period Selector */
+.period-selector {
+  display: flex;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 3px;
+  border-radius: 8px;
+}
+
+.period-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.period-btn:hover {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.period-btn.active {
+  background: rgba(0, 0, 0, 0.1);
+  color: #000000;
+}
+
+/* Chart Container */
+.chart-container {
+  flex: 1;
+  min-height: 300px;
+  height: 300px;
+  width: 100%;
+  position: relative;
+}
+
+/* uPlot Overrides */
+.chart-container .uplot {
+  width: 100% !important;
+}
+
+.chart-container .u-wrap {
+  width: 100% !important;
+}
+
+.chart-container .u-over {
+  cursor: crosshair;
+}
+
+.chart-container .u-cursor-x,
+.chart-container .u-cursor-y {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.chart-container .u-cursor-pt {
+  border-color: #fff !important;
+  background: #fff !important;
+}
+
+/* Tooltip */
+.performance-tooltip {
+  background: rgba(20, 20, 25, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 8px;
+  padding: 12px 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  color: #ffffff !important;
+}
+
+.tooltip-date {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5) !important;
+  margin: 0 0 8px 0;
+}
+
+.tooltip-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tooltip-line-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.tooltip-line-color {
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.tooltip-line-name {
+  color: rgba(255, 255, 255, 0.8) !important;
+  min-width: 50px;
+  font-weight: 500;
+}
+
+.tooltip-line-value {
+  margin-left: auto;
+  font-weight: 600;
+  color: #ffffff !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .performance-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .period-selector {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+
+  .period-btn {
+    flex: 1;
+    text-align: center;
+  }
+
+  .stock-legend {
+    gap: 4px;
+  }
+
+  .legend-item {
+    flex-wrap: wrap;
+  }
+}
