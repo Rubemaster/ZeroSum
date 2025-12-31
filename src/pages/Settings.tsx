@@ -3,7 +3,7 @@ import { useAuth, useUser } from '@clerk/clerk-react';
 import './Pages.css';
 import './Settings.css';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://zerosumserver.onrender.com';
 
 interface UserSettings {
   id: string;

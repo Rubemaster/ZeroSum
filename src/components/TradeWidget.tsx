@@ -3,7 +3,7 @@ import { useAuth } from '@clerk/clerk-react';
 import { useAccount } from '../context/AccountContext';
 import './TradeWidget.css';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://zerosumserver.onrender.com';
 
 interface TradeWidgetProps {
   selectedStock: string | null;

@@ -28,7 +28,7 @@ interface StockData {
 
 type TimeRange = '1D' | '1W' | '1M' | '3M' | '1Y' | 'ALL';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://zerosumserver.onrender.com';
 
 const TIME_RANGE_CONFIG: Record<TimeRange, { range: string; interval: string }> = {
   '1D': { range: '1d', interval: '5m' },
