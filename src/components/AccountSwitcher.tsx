@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAccount } from '../context/AccountContext';
-import type { AccountMode, IndividualAccount } from '../context/AccountContext';
+import type { IndividualAccount } from '../context/AccountContext';
 import './AccountSwitcher.css';
 
 const AccountSwitcher = () => {

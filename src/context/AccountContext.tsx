@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 
 const API_BASE = import.meta.env.VITE_API_BASE || 'https://zerosumserver.onrender.com';

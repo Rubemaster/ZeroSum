@@ -64,15 +64,6 @@ const PERIOD_CONFIG: Record<Period, { range: string; interval: string }> = {
 const LONG_COLOR = '#22c55e';  // Green
 const SHORT_COLOR = '#ef4444'; // Red
 
-// Legacy colors kept for fallback/other uses
-const STOCK_COLORS = [
-  '#3b82f6',
-  '#8b5cf6',
-  '#ec4899',
-  '#f59e0b',
-  '#10b981',
-  '#06b6d4',
-];
 
 const PerformanceChart = () => {
   const { getToken } = useAuth();
@@ -683,7 +674,7 @@ const PerformanceChart = () => {
             ctx.textAlign = 'left';
             ctx.textBaseline = 'bottom';
             // Add a background for better visibility
-            const label = series.label || '';
+            const label = typeof series.label === 'string' ? series.label : '';
             const textMetrics = ctx.measureText(label);
             const padding = 3;
             ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
