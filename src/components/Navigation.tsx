@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/clerk-react';
 import SearchBar from './SearchBar';
+import AccountSwitcher from './AccountSwitcher';
 import './Navigation.css';
 
 interface NavigationProps {
@@ -35,9 +36,15 @@ const Navigation = ({ variant = 'default' }: NavigationProps) => {
         <NavLink to="/glass" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
           Glass
         </NavLink>
+        <NavLink to="/settings" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+          Settings
+        </NavLink>
       </div>
 
       <div className="nav-actions">
+        <SignedIn>
+          <AccountSwitcher />
+        </SignedIn>
         <SearchBar />
         <SignedOut>
           <SignInButton mode="modal">

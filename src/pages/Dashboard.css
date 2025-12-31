@@ -120,6 +120,12 @@
   font-weight: 500;
 }
 
+.position-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .position-value {
   display: flex;
   flex-direction: column;
@@ -139,6 +145,29 @@
 
 .position-value .change.positive { color: #4ade80; }
 .position-value .change.negative { color: #f87171; }
+
+.position-close-btn {
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.15);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.position-close-btn:hover:not(:disabled) {
+  background: rgba(248, 113, 113, 0.25);
+  border-color: rgba(248, 113, 113, 0.5);
+}
+
+.position-close-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 /* News Widget */
 .news-list {

@@ -2,12 +2,14 @@ import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-route
 import { SignedIn, SignedOut, RedirectToSignIn, SignIn, SignUp } from '@clerk/clerk-react';
 import Navigation from './components/Navigation';
 import KYCGate from './components/KYCGate';
+import { AccountProvider } from './context/AccountContext';
 import Dashboard from './pages/Dashboard';
 import Trade from './pages/Trade';
 import Portfolio from './pages/Portfolio';
 import Markets from './pages/Markets';
 import History from './pages/History';
 import GlassDemo from './pages/GlassDemo';
+import Settings from './pages/Settings';
 import rockiesImage from './assets/rockies-snow.jpg';
 import './App.css';
 
@@ -68,6 +70,7 @@ function ProtectedApp() {
             <Route path="/markets" element={<Markets />} />
             <Route path="/history" element={<History />} />
             <Route path="/glass" element={<GlassDemo />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
@@ -126,7 +129,9 @@ function AppContent() {
   return (
     <>
       <SignedIn>
-        <ProtectedApp />
+        <AccountProvider>
+          <ProtectedApp />
+        </AccountProvider>
       </SignedIn>
       <SignedOut>
         <RedirectToSignIn />

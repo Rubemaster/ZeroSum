@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
+import { useAccount } from '../context/AccountContext';
 import Widget from '../components/Widget';
 import AddWidget from '../components/AddWidget';
 import SearchBar from '../components/SearchBar';
 import TradeWidget from '../components/TradeWidget';
 import ChartWidget from '../components/ChartWidget';
 import PerformanceChart from '../components/PerformanceChart';
-import CashHistoryWidget from '../components/CashHistoryWidget';
 import type { WidgetConfig } from '../components/AddWidget';
 import './Pages.css';
 import './Dashboard.css';
@@ -78,9 +78,9 @@ const WIDGET_REGISTRY: WidgetConfig[] = [
   { id: 'watchlist', name: 'Watchlist', description: 'Track your favorite stocks', icon: '★' },
   { id: 'positions', name: 'Open Positions', description: 'Your current holdings', icon: '◧' },
   { id: 'orders', name: 'Order History', description: 'Recent buy and sell orders', icon: '☰' },
+  { id: 'cashHistory', name: 'Cash History', description: 'Account cash events and activities', icon: '◎' },
   { id: 'news', name: 'Market News', description: 'Latest financial headlines', icon: '◉' },
   { id: 'movers', name: 'Top Movers', description: 'Biggest gainers and losers', icon: '⇅' },
-  { id: 'cash-history', name: 'Cash History', description: 'Historical cash balance from activities', icon: '⟳' },
 ];
 
 // Default active widgets
@@ -103,6 +103,7 @@ const getTimeAgo = (date: Date): string => {
 
 const Dashboard = () => {
   const { getToken } = useAuth();
+  const { mode, activeKeyId } = useAccount();
   const [activeWidgets, setActiveWidgets] = useState<string[]>(DEFAULT_WIDGETS);
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
   const [account, setAccount] = useState<AlpacaAccount | null>(null);
@@ -114,7 +115,15 @@ const Dashboard = () => {
   const [watchlistLoading, setWatchlistLoading] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(true);
+  const [activities, setActivities] = useState<unknown[]>([]);
+  const [activitiesLoading, setActivitiesLoading] = useState(false);
   const [serverStatus, setServerStatus] = useState<'checking' | 'online' | 'offline'>('checking');
+  const [closingPosition, setClosingPosition] = useState<string | null>(null);
+
+  // Determine endpoint base based on account mode
+  const accountEndpoint = mode === 'individual' ? '/api/individual/account' : '/api/account';
+  const positionsEndpoint = mode === 'individual' ? '/api/individual/positions' : '/api/positions';
+  const ordersEndpoint = mode === 'individual' ? '/api/individual/orders' : '/api/orders';
 
   // Check server health on mount
   useEffect(() => {
@@ -138,11 +147,12 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchAccount = async () => {
+      setAccountLoading(true);
       try {
-        console.log('[Dashboard] Fetching account from:', `${API_BASE}/api/account`);
+        console.log('[Dashboard] Fetching account from:', `${API_BASE}${accountEndpoint}`);
         const token = await getToken();
         console.log('[Dashboard] Got auth token:', token ? 'Yes' : 'No');
-        const response = await fetch(`${API_BASE}/api/account`, {
+        const response = await fetch(`${API_BASE}${accountEndpoint}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log('[Dashboard] Response status:', response.status);
@@ -152,35 +162,41 @@ const Dashboard = () => {
           setAccount(data);
         } else {
           console.error('[Dashboard] Account fetch failed:', data);
+          setAccount(null);
         }
       } catch (err) {
         console.error('[Dashboard] Failed to fetch account:', err);
+        setAccount(null);
       } finally {
         setAccountLoading(false);
       }
     };
     fetchAccount();
-  }, [getToken]);
+  }, [getToken, accountEndpoint, activeKeyId]);
 
   useEffect(() => {
     const fetchPositions = async () => {
+      setPositionsLoading(true);
       try {
         const token = await getToken();
-        const response = await fetch(`${API_BASE}/api/positions`, {
+        const response = await fetch(`${API_BASE}${positionsEndpoint}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.ok) {
           const data = await response.json();
           setPositions(data);
+        } else {
+          setPositions([]);
         }
       } catch (err) {
         console.error('Failed to fetch positions:', err);
+        setPositions([]);
       } finally {
         setPositionsLoading(false);
       }
     };
     fetchPositions();
-  }, [getToken]);
+  }, [getToken, positionsEndpoint, activeKeyId]);
 
   // Fetch watchlist and quotes
   useEffect(() => {
@@ -232,23 +248,57 @@ const Dashboard = () => {
   // Fetch order history
   useEffect(() => {
     const fetchOrders = async () => {
+      setOrdersLoading(true);
       try {
         const token = await getToken();
-        const response = await fetch(`${API_BASE}/api/orders`, {
+        const response = await fetch(`${API_BASE}${ordersEndpoint}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.ok) {
           const data = await response.json();
           setOrders(data);
+        } else {
+          setOrders([]);
         }
       } catch (err) {
         console.error('Failed to fetch orders:', err);
+        setOrders([]);
       } finally {
         setOrdersLoading(false);
       }
     };
     fetchOrders();
-  }, [getToken]);
+  }, [getToken, ordersEndpoint, activeKeyId]);
+
+  // Fetch account activities (only for individual mode)
+  useEffect(() => {
+    if (mode !== 'individual') {
+      setActivities([]);
+      return;
+    }
+
+    const fetchActivities = async () => {
+      setActivitiesLoading(true);
+      try {
+        const token = await getToken();
+        const response = await fetch(`${API_BASE}/api/individual/activities`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setActivities(data);
+        } else {
+          setActivities([]);
+        }
+      } catch (err) {
+        console.error('Failed to fetch activities:', err);
+        setActivities([]);
+      } finally {
+        setActivitiesLoading(false);
+      }
+    };
+    fetchActivities();
+  }, [getToken, mode, activeKeyId]);
 
   const handleRemoveFromWatchlist = async (symbol: string) => {
     try {
@@ -304,6 +354,55 @@ const Dashboard = () => {
       }
     } catch (err) {
       console.error('Failed to add to watchlist:', err);
+    }
+  };
+
+  const handleClosePosition = async (symbol: string, qty: string) => {
+    if (mode !== 'individual') return;
+
+    setClosingPosition(symbol);
+    try {
+      const token = await getToken();
+      const response = await fetch(`${API_BASE}/api/individual/orders`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          symbol,
+          qty: parseFloat(qty),
+          side: 'sell',
+          type: 'market',
+          time_in_force: 'day',
+        }),
+      });
+
+      if (response.ok) {
+        // Refresh positions after closing
+        const positionsResponse = await fetch(`${API_BASE}${positionsEndpoint}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (positionsResponse.ok) {
+          const data = await positionsResponse.json();
+          setPositions(data);
+        }
+        // Also refresh orders to show the new sell order
+        const ordersResponse = await fetch(`${API_BASE}${ordersEndpoint}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (ordersResponse.ok) {
+          const data = await ordersResponse.json();
+          setOrders(data);
+        }
+      } else {
+        const data = await response.json();
+        console.error('Failed to close position:', data.error);
+      }
+    } catch (err) {
+      console.error('Failed to close position:', err);
+    } finally {
+      setClosingPosition(null);
     }
   };
 
@@ -418,6 +517,7 @@ const Dashboard = () => {
         if (positions.length === 0) {
           return <div className="positions-list"><p className="no-positions">No open positions</p></div>;
         }
+        const canClosePositions = mode === 'individual';
         return (
           <div className="positions-list">
             {positions.map(pos => {
@@ -425,6 +525,7 @@ const Dashboard = () => {
               const plPercent = parseFloat(pos.unrealizedPLPercent || '0') * 100;
               const qty = parseFloat(pos.qty || '0');
               const filledDate = pos.filledAt ? new Date(pos.filledAt) : null;
+              const isClosing = closingPosition === pos.symbol;
               return (
                 <div key={pos.symbol} className="position-item">
                   <div className="position-info">
@@ -434,11 +535,23 @@ const Dashboard = () => {
                       <span className="position-filled">Filled {getTimeAgo(filledDate)}</span>
                     )}
                   </div>
-                  <div className="position-value">
-                    <span className="value">${marketValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                    <span className={`change ${plPercent >= 0 ? 'positive' : 'negative'}`}>
-                      {plPercent >= 0 ? '+' : ''}{plPercent.toFixed(2)}%
-                    </span>
+                  <div className="position-actions">
+                    <div className="position-value">
+                      <span className="value">${marketValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      <span className={`change ${plPercent >= 0 ? 'positive' : 'negative'}`}>
+                        {plPercent >= 0 ? '+' : ''}{plPercent.toFixed(2)}%
+                      </span>
+                    </div>
+                    {canClosePositions && (
+                      <button
+                        className="position-close-btn"
+                        onClick={() => handleClosePosition(pos.symbol, pos.qty)}
+                        disabled={isClosing}
+                        title="Close position"
+                      >
+                        {isClosing ? 'Closing...' : 'Close'}
+                      </button>
+                    )}
                   </div>
                 </div>
               );
@@ -480,6 +593,40 @@ const Dashboard = () => {
                 </div>
               );
             })}
+          </div>
+        );
+      }
+
+      case 'cashHistory': {
+        if (mode !== 'individual') {
+          return (
+            <div className="cash-history-widget">
+              <p className="cash-history-notice">Cash history is only available for individual accounts. Switch to an individual account to view.</p>
+            </div>
+          );
+        }
+        if (activitiesLoading) {
+          return <div className="cash-history-widget"><p>Loading activities...</p></div>;
+        }
+        return (
+          <div className="cash-history-widget">
+            <textarea
+              className="cash-history-json"
+              readOnly
+              value={JSON.stringify(activities, null, 2)}
+              style={{
+                width: '100%',
+                height: '300px',
+                fontFamily: 'monospace',
+                fontSize: '11px',
+                backgroundColor: '#ffffff',
+                color: '#1a1a1a',
+                border: '1px solid #e0e0e0',
+                borderRadius: '6px',
+                padding: '12px',
+                resize: 'vertical',
+              }}
+            />
           </div>
         );
       }
@@ -530,9 +677,6 @@ const Dashboard = () => {
           </div>
         );
 
-      case 'cash-history':
-        return <CashHistoryWidget />;
-
       default:
         return null;
     }
@@ -550,7 +694,7 @@ const Dashboard = () => {
     if (widgetId === 'stats') return 'widget-full';
     if (widgetId === 'performance') return 'widget-large';
     if (widgetId === 'orders') return 'widget-two-fifth';
-    if (widgetId === 'cash-history') return 'widget-large';
+    if (widgetId === 'cashHistory') return 'widget-large';
     return 'widget-small';
   };
 
@@ -567,7 +711,9 @@ const Dashboard = () => {
         <h1>Dashboard</h1>
         <p className="page-subtitle">
           {account ? (
-            <>Account #{account.accountNumber} · {account.status}</>
+            <>
+              {mode === 'individual' ? 'Individual Account' : 'ZeroSum Account'} #{account.accountNumber} · {account.status}
+            </>
           ) : (
             'Welcome back. Here\'s your portfolio overview.'
           )}
